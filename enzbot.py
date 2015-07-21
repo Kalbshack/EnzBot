@@ -37,7 +37,7 @@ def readCommand():
                 elif command == "/mentemp":
                     bot.sendMessage(chat_id=chat_id, text=wTemp(1) + '\n' + getWeather())
                 elif command == "/weather":
-                    getWeather()
+                    bot.sendMessage(chat_id=chat_id, text=getWeather())
                 elif command == "/help" or command == "/start":
                     bot.sendMessage(chat_id=chat_id, text=info())
                 else:
