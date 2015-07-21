@@ -7,6 +7,8 @@ import csv
 import time
 import urllib2
 import bottoken
+import json
+import time
 
 # Telegram Bot Authorization Token
 bot = telegram.Bot(token=bottoken.defaultbot)
@@ -31,9 +33,11 @@ def readCommand():
 
             if (command):
                 if command == "/temp":
-                    bot.sendMessage(chat_id=chat_id, text=wTemp(0))
+                    bot.sendMessage(chat_id=chat_id, text=wTemp(0) + '\n' + getWeather())
                 elif command == "/mentemp":
-                    bot.sendMessage(chat_id=chat_id, text=wTemp(1))
+                    bot.sendMessage(chat_id=chat_id, text=wTemp(1) + '\n' + getWeather())
+                elif command == "/weather":
+                    getWeather()
                 elif command == "/help" or command == "/start":
                     bot.sendMessage(chat_id=chat_id, text=info())
                 else:
@@ -56,6 +60,34 @@ def wTemp(choice):
             return msg + str(actl[0]) + '°C'
         elif choice == 1:
             return msg + convertTempToMen(actl[0]) + 'cm'
+
+def getWeather():
+    url = 'http://api.openweathermap.org/data/2.5/weather/?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
+    response = urllib2.urlopen(url);
+    data = json.loads(response.read())
+    wTime = time.strftime("%H:%M", time.gmtime(data.get('dt', '')))
+    return 'Das Wetter um ' + wTime + ': ' + str(data.get('weather', '')[0].get('description', '')) + ' bei ' + str(data.get('main', '').get('temp', '')) + '°C\n\n' + getWeatherForecast()
+
+def getWeatherForecast():
+    url = 'http://api.openweathermap.org/data/2.5/forecast?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
+    response = urllib2.urlopen(url);
+    data = json.loads(response.read())
+
+    fStr = ''
+
+    for i in range(2):
+        fStr += 'Wettervorhersage für '
+        #fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[0]))
+        fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[i].get('dt', '')))
+        fStr += ': '
+        fStr += str(data.get('list', '')[i].get('weather')[0].get('description', ''))
+        fStr += ' bei '
+        fStr += str(data.get('list', '')[i].get('main').get('temp', ''))
+        fStr += '°C\n'
+
+
+    return fStr
+
 
 def getValues():
     #Url with the table(csv) of temperatures from enz in bessigheim
