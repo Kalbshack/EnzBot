@@ -9,7 +9,7 @@ import urllib2
 import bottoken
 
 # Telegram Bot Authorization Token
-bot = telegram.Bot(token=bottoken.enz)
+bot = telegram.Bot(token=bottoken.defaultbot)
 
 # This will be our global variable to keep the latest update_id when requesting
 # for updates. It starts with the latest update_id if available.
