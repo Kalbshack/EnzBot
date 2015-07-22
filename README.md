@@ -5,6 +5,7 @@ Install python-telegram:
 ```
 $ pip install python-telegram-bot --upgrade
 ```
+Copy bottoken.py from server.
 
 Start the script with:
 ```
