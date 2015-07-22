@@ -51,7 +51,7 @@ def wTemp(choice):
     actl = getValues()
 
     if actl[0] == -10.0 and actl[1] == -1:
-        return 'Momentan steht keine Temperatur zur Verfügung. Versuch es später noch einmal.'
+        return 'Momentan steht keine Wassertemperatur zur Verfügung. Versuch es später noch einmal.'
     else:
         time = actl[1]
 
@@ -62,31 +62,41 @@ def wTemp(choice):
             return msg + convertTempToMen(actl[0]) + 'cm'
 
 def getWeather():
-    url = 'http://api.openweathermap.org/data/2.5/weather/?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
-    response = urllib2.urlopen(url);
-    data = json.loads(response.read())
-    wTime = time.strftime("%H:%M", time.gmtime(data.get('dt', '')))
-    return 'Das Wetter um ' + wTime + ': ' + str(data.get('weather', '')[0].get('description', '')) + ' bei ' + str(data.get('main', '').get('temp', '')) + '°C\n\n' + getWeatherForecast()
+    try:
+        url = 'http://api.openweathermap.org/data/2.5/weather/?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
+        response = urllib2.urlopen(url);
+        data = json.loads(response.read())
+        wTime = time.strftime("%H:%M", time.gmtime(data.get('dt', '')))
+        return 'Das Wetter um ' + wTime + ': ' + str(data.get('weather', '')[0].get('description', '')) + ' bei ' + str(data.get('main', '').get('temp', '')) + '°C\n\n' + getWeatherForecast()
+    except:
+        return 'Momentan ist keine Wetterabfrage verfügbar. Versuch es später noch einmal.'
 
 def getWeatherForecast():
-    url = 'http://api.openweathermap.org/data/2.5/forecast?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
-    response = urllib2.urlopen(url);
-    data = json.loads(response.read())
+    try:
+        url = 'http://api.openweathermap.org/data/2.5/forecast?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
+        response = urllib2.urlopen(url);
+        data = json.loads(response.read())
 
-    fStr = ''
+        fStr = ''
 
-    for i in range(2):
-        fStr += 'Wettervorhersage für '
-        #fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[0]))
-        fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[i].get('dt', '')))
-        fStr += ': '
-        fStr += str(data.get('list', '')[i].get('weather')[0].get('description', ''))
-        fStr += ' bei '
-        fStr += str(data.get('list', '')[i].get('main').get('temp', ''))
-        fStr += '°C\n'
+        for i in range(2):
+            fStr += 'Wettervorhersage für '
+            #fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[0]))
+            fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[i].get('dt', '')))
+            fStr += ': '
+            print str(data.get('list', '')[i].get('weather')[0].get('description', ''))
+            fStr += unicode((data.get('list', '')[i].get('weather')[0].get('description', '')), errors='ignore');
+            fStr += ' bei '
+            fStr += str(data.get('list', '')[i].get('main').get('temp', ''))
+            fStr += '°C\n'
 
 
-    return fStr
+        return fStr
+    except Exception, err:
+        print ('ERROR: %s\n' % str(err))
+        return 'Eine Wettervorhersage ist momentan nicht möglich.'
+    #except:
+    #    return 'Eine Wettervorhersage ist momentan nicht möglich.'
 
 
 def getValues():
@@ -105,7 +115,7 @@ def getValues():
         temp = float(".".join(tmp[1].split(",")))
 
         return [temp, time]
-    except urllib2.URLError:
+    except:
         return [-10.0, -1]
 
 
