@@ -67,7 +67,7 @@ def getWeather():
         response = urllib2.urlopen(url);
         data = json.loads(response.read())
         wTime = time.strftime("%H:%M", time.gmtime(data.get('dt', '')))
-        return 'Das Wetter um ' + wTime + ': ' + str(data.get('weather', '')[0].get('description', '')) + ' bei ' + str(data.get('main', '').get('temp', '')) + '°C\n\n' + getWeatherForecast()
+        return 'Das Wetter um ' + wTime + ': ' + str(data.get('weather', '')[0].get('description', '').encode('utf-8')) + ' bei ' + str(data.get('main', '').get('temp', '')) + '°C\n\n' + getWeatherForecast()
     except:
         return 'Momentan ist keine Wetterabfrage verfügbar. Versuch es später noch einmal.'
 
@@ -84,8 +84,7 @@ def getWeatherForecast():
             #fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[0]))
             fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[i].get('dt', '')))
             fStr += ': '
-            print str(data.get('list', '')[i].get('weather')[0].get('description', ''))
-            fStr += unicode((data.get('list', '')[i].get('weather')[0].get('description', '')), errors='ignore');
+            fStr += str(data.get('list', '')[i].get('weather')[0].get('description', '').encode('utf-8'))
             fStr += ' bei '
             fStr += str(data.get('list', '')[i].get('main').get('temp', ''))
             fStr += '°C\n'
