@@ -32,7 +32,8 @@ def readCommand():
 
             if (command):
                 if command == "/temp":
-                    bot.sendMessage(chat_id=chat_id, text=wTemp(0) + '\n' + getWeather())
+                    image.makeImage(weather.getWeather())
+                    bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
                 elif command == "/img":
                     image.makeImage(weather.getWeather())
                     bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
