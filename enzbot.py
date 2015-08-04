@@ -3,12 +3,11 @@
 '''Simple Bot to reply Telegram messages'''
 
 import telegram
-import csv
 import time
-import urllib2
 import bottoken
-import json
-import time
+import image
+import weather
+
 
 # Telegram Bot Authorization Token
 bot = telegram.Bot(token=bottoken.defaultbot)
@@ -34,6 +33,9 @@ def readCommand():
             if (command):
                 if command == "/temp":
                     bot.sendMessage(chat_id=chat_id, text=wTemp(0) + '\n' + getWeather())
+                elif command == "/img":
+                    image.makeImage(weather.getWeather())
+                    bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
                 elif command == "/mentemp":
                     bot.sendMessage(chat_id=chat_id, text=wTemp(1) + '\n' + getWeather())
                 elif command == "/weather":
@@ -45,78 +47,6 @@ def readCommand():
 
                 # Updates global offset to get the new updates
                 LAST_UPDATE_ID = update.update_id
-
-def wTemp(choice):
-    #Getting the actual temperature
-    actl = getValues()
-
-    if actl[0] == -10.0 and actl[1] == -1:
-        return 'Momentan steht keine Wassertemperatur zur Verfügung. Versuch es später noch einmal.'
-    else:
-        time = actl[1]
-
-        msg = 'Zwischen ' + str(time) + '-' + str(time + 1) + 'Uhr betrug die Wassertemperatur: '
-        if choice == 0:
-            return msg + str(actl[0]) + '°C'
-        elif choice == 1:
-            return msg + convertTempToMen(actl[0]) + 'cm'
-
-def getWeather():
-    try:
-        url = 'http://api.openweathermap.org/data/2.5/weather/?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
-        response = urllib2.urlopen(url);
-        data = json.loads(response.read())
-        wTime = time.strftime("%H:%M", time.gmtime(data.get('dt', '')))
-        return 'Das Wetter um ' + wTime + ': ' + str(data.get('weather', '')[0].get('description', '').encode('utf-8')) + ' bei ' + str(data.get('main', '').get('temp', '')) + '°C\n\n' + getWeatherForecast()
-    except:
-        return 'Momentan ist keine Wetterabfrage verfügbar. Versuch es später noch einmal.'
-
-def getWeatherForecast():
-    try:
-        url = 'http://api.openweathermap.org/data/2.5/forecast?id=2949012&lang=de&units=metric&APPID=' + bottoken.weatherApiKey
-        response = urllib2.urlopen(url);
-        data = json.loads(response.read())
-
-        fStr = ''
-
-        for i in range(2):
-            fStr += 'Wettervorhersage für '
-            #fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[0]))
-            fStr += time.strftime("%H:%M", time.gmtime(data.get('list', '')[i].get('dt', '')))
-            fStr += ': '
-            fStr += str(data.get('list', '')[i].get('weather')[0].get('description', '').encode('utf-8'))
-            fStr += ' bei '
-            fStr += str(data.get('list', '')[i].get('main').get('temp', ''))
-            fStr += '°C\n'
-
-
-        return fStr
-    except Exception, err:
-        print ('ERROR: %s\n' % str(err))
-        return 'Eine Wettervorhersage ist momentan nicht möglich.'
-    #except:
-    #    return 'Eine Wettervorhersage ist momentan nicht möglich.'
-
-
-def getValues():
-    #Url with the table(csv) of temperatures from enz in bessigheim
-    url = "https://www.lubw.baden-wuerttemberg.de/servlet/is/84696/data.csv"
-    try:
-        #Try reading the values from the url
-        response = urllib2.urlopen(url)
-        spamreader = csv.reader(response, delimiter=';', quotechar='|')
-        #Get rid of description from the csv
-        spamreader.next()
-        #Get the actual values
-        tmp = spamreader.next()
-        #Parse the values from the table content
-        time = int(tmp[0].split(' ')[1].split(":")[0]) + 1
-        temp = float(".".join(tmp[1].split(",")))
-
-        return [temp, time]
-    except:
-        return [-10.0, -1]
-
 
 def info():
     #Info which is displayed by typing /help or starting the Bot
