@@ -37,7 +37,8 @@ def readCommand():
                     image.makeImage(weather.getWeather())
                     bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
                 elif command == "/mentemp":
-                    bot.sendMessage(chat_id=chat_id, text=wTemp(1) + '\n' + getWeather())
+                    #bot.sendMessage(chat_id=chat_id, text=wTemp(1) + '\n' + getWeather())
+                    print "mentemp"
                 elif command == "/weather":
                     bot.sendMessage(chat_id=chat_id, text=getWeather())
                 elif command == "/help" or command == "/start":
