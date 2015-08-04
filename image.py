@@ -6,10 +6,10 @@ from PIL import ImageDraw
 
 
 #Different type/sizes of fonts
-title = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",30)
-semititle = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",25)
-cright = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",10)
-main = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",15)
+title = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf",30)
+semititle = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf",25)
+cright = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf",10)
+main = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf",15)
 
 def makeImage(weather):
     time = weather[0]
