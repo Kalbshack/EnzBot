@@ -3,8 +3,9 @@
 from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
+import os.path
 
-
+path = os.path.dirname(os.path.realpath(__file__))
 #Different type/sizes of fonts
 title = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf",30)
 semititle = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf",25)
@@ -19,19 +20,19 @@ def makeImage(weather):
     forecast = weather[4]
     #Get the weather symbol
     miniIconSize = 25
-    icn = Image.open('icons/' + icon + '.png')
+    icn = Image.open(path + '/icons/' + icon + '.png')
     icn.thumbnail((80, 80), Image.ANTIALIAS)
 
-    aTempIcon = Image.open('icons/aTemp.png')
-    wTempIcon = Image.open('icons/wTemp.png')
+    aTempIcon = Image.open(path + '/icons/aTemp.png')
+    wTempIcon = Image.open(path + '/icons/wTemp.png')
     wTempIcon.thumbnail((25,25), Image.ANTIALIAS)
 
     forIcon = []
-    forIcon.append(Image.open('icons/' + forecast[0][2] + '.png'))
+    forIcon.append(Image.open(path + '/icons/' + forecast[0][2] + '.png'))
     forIcon[0].thumbnail((miniIconSize, miniIconSize), Image.ANTIALIAS)
-    forIcon.append(Image.open('icons/' + forecast[1][2] + '.png'))
+    forIcon.append(Image.open(path + '/icons/' + forecast[1][2] + '.png'))
     forIcon[1].thumbnail((miniIconSize, miniIconSize), Image.ANTIALIAS)
-    forIcon.append(Image.open('icons/' + forecast[2][2] + '.png'))
+    forIcon.append(Image.open(path + '/icons/' + forecast[2][2] + '.png'))
     forIcon[2].thumbnail((miniIconSize, miniIconSize), Image.ANTIALIAS)
 
     white = Image.new("RGBA", (80,80),(255,255,255))
@@ -39,7 +40,7 @@ def makeImage(weather):
     degSign = '°'.decode('utf-8')
 
     #img = Image.new("RGBA", (300,150),(14,93,138))
-    img = Image.open('bg.jpeg')
+    img = Image.open(path + '/bg.jpeg')
     img.paste(white, (210,5), icn)
     draw = ImageDraw.Draw(img)
 
