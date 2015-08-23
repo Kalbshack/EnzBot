@@ -28,27 +28,32 @@ def readCommand():
         if LAST_UPDATE_ID < update.update_id:
             # chat_id is required to reply any message
             chat_id = update.message.chat_id
-            command = update.message.text.lower()
 
-            if (command):
-                if command == "/temp":
-                    image.makeImage(weather.getWeather())
-                    bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
-                elif command == "/img":
-                    image.makeImage(weather.getWeather())
-                    bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
-                #elif command == "/mentemp":
-                    #bot.sendMessage(chat_id=chat_id, text=wTemp(1) + '\n' + getWeather())
-                    #print "mentemp"
-                #elif command == "/weather":
-                    #bot.sendMessage(chat_id=chat_id, text=getWeather())
-                elif command == "/help" or command == "/start":
-                    bot.sendMessage(chat_id=chat_id, text=info())
-                else:
-                    bot.sendMessage(chat_id=chat_id, text="Failure is simply the opportunity to begin again, this time more intelligently.")
+            if update.message.text:
+                print "You got text"
 
-                # Updates global offset to get the new updates
-                LAST_UPDATE_ID = update.update_id
+                command = update.message.text.lower()
+                if (command):
+                    if command == "/temp":
+                        image.makeImage(weather.getWeather())
+                        bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
+                    elif command == "/img":
+                        image.makeImage(weather.getWeather())
+                        bot.sendPhoto(chat_id=chat_id, photo='http://kalbshack.net/test.png')
+                    #elif command == "/mentemp":
+                        #bot.sendMessage(chat_id=chat_id, text=wTemp(1) + '\n' + getWeather())
+                        #print "mentemp"
+                    #elif command == "/weather":
+                        #bot.sendMessage(chat_id=chat_id, text=getWeather())
+                    elif command == "/help" or command == "/start":
+                        bot.sendMessage(chat_id=chat_id, text=info())
+                    else:
+                        bot.sendMessage(chat_id=chat_id, text="Failure is simply the opportunity to begin again, this time more intelligently.")
+            else:
+                bot.sendMessage(chat_id=chat_id, text="Failure is simply the opportunity to begin again, this time more intelligently.")
+
+            # Updates global offset to get the new updates
+            LAST_UPDATE_ID = update.update_id
 
 def info():
     #Info which is displayed by typing /help or starting the Bot
