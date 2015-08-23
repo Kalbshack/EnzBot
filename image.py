@@ -42,17 +42,23 @@ def makeImage(weather):
     img = Image.open('bg.jpeg')
     img.paste(white, (210,5), icn)
     draw = ImageDraw.Draw(img)
+
+    #Creating Head
     draw.text((5, 5),('Enz ' + time),(255,255,255),font=title)
+    #Creating air temperature incl. Icon
     draw.text((218, 90),str(aTemp) + degSign,(255,255,255),font=title)
     img.paste(aTempIcon, (200, 80), aTempIcon)
+    #Creating water temperature incl. Icon
     draw.text((230, 120),str(wTemp) + degSign,(255,255,255),font=semititle)
     img.paste(wTempIcon, (200, 124), wTempIcon)
+    #Creating forecast temperature incl. Icon
     draw.text((5, 65),forecast[0][0] + "          " + str(forecast[0][1]) + degSign,(255,255,255),font=main)
     img.paste(forWhite, (65,60), forIcon[0])
-    draw.text((5, 95),"21:00          33.0" + degSign,(255,255,255),font=main)
+    draw.text((5, 95),forecast[1][0] + "          " + str(forecast[1][1]) + degSign,(255,255,255),font=main)
     img.paste(forWhite, (65,90), forIcon[1])
-    draw.text((5, 125),"24:00          13.7" + degSign,(255,255,255),font=main)
+    draw.text((5, 125),forecast[2][0] + "          " + str(forecast[2][1]) + degSign,(255,255,255),font=main)
     img.paste(forWhite, (65,120), forIcon[2])
+
     draw = ImageDraw.Draw(img)
     #img.save("test.png")
     img.save("/home/lars/web/test.png")

@@ -7,8 +7,10 @@ import time
 import bottoken
 import image
 import weather
+import os
 
-
+for param in os.environ.keys():
+    print "%20s %s" % (param,os.environ[param])
 # Telegram Bot Authorization Token
 bot = telegram.Bot(token=bottoken.defaultbot)
 
@@ -50,6 +52,7 @@ def readCommand():
                     else:
                         bot.sendMessage(chat_id=chat_id, text="Failure is simply the opportunity to begin again, this time more intelligently.")
             else:
+                print "No command found"
                 bot.sendMessage(chat_id=chat_id, text="Failure is simply the opportunity to begin again, this time more intelligently.")
 
             # Updates global offset to get the new updates

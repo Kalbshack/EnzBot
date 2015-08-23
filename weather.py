@@ -81,7 +81,8 @@ def getForecast():
             fStr += str(data.get('list', '')[i].get('main').get('temp', ''))
             fStr += '°C\n'
             fcData.append([time.strftime("%H:%M", time.gmtime(data.get('list', '')[i].get('dt', ''))), "%.1f" % data.get('list', '')[i].get('main').get('temp', ''), str(data.get('list', '')[i].get('weather')[0].get('icon', '').encode('utf-8'))[:-1]])
-
+        print fStr
+        print fcData
 
         return fcData 
         #return fStr
