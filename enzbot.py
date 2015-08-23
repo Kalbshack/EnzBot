@@ -11,6 +11,9 @@ import os
 
 for param in os.environ.keys():
     print "%20s %s" % (param,os.environ[param])
+print os.path.realpath(__file__)
+print "Pathname: "
+print os.path.dirname(os.path.realpath(__file__))
 # Telegram Bot Authorization Token
 bot = telegram.Bot(token=bottoken.defaultbot)
 
